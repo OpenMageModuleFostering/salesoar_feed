@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Salesoar
+ *
+ * @category    Salesoar
+ * @package     Salesoar_Feed
+ * @copyright   Copyright (c) 2015 Salesoar S.r.l. (http://salesoar.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+-->
+<layout version="0.1.0">
+    <!--
+    Default layout, loads most of the pages
+    -->
+    <salesoar_feed_feed_index>
+        <block type="Salesoar_Feed/all" output="toHtml" name="salesoar_feed_all">
+        </block>
+    </salesoar_feed_feed_index>
+    <salesoar_feed_feed_xml>
+        <block type="Salesoar_Feed/xml" output="toHtml" name="salesoar_feed_xml">
+        </block>
+    </salesoar_feed_feed_xml>
+    <salesoar_feed_feed_create>
+        <block type="Salesoar_Feed/create" output="toHtml" name="salesoar_feed_create">
+        </block>
+    </salesoar_feed_feed_create>
+</layout>
