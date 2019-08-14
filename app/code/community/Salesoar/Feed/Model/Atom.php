@@ -82,10 +82,10 @@ EOT;
     <sr:landing>
       <sr:name><![CDATA[%s]]></sr:name>
       <sr:concepts>
-        <group>\n
+        <sr:group>\n
 EOT;
         $formatEnd = <<<EOT
-        </group>
+        </sr:group>
       </sr:concepts>
       <sr:url><![CDATA[%s]]></sr:url>
     </sr:landing>\n
@@ -221,4 +221,3 @@ EOT;
         return $this->output;
     }
 }
-

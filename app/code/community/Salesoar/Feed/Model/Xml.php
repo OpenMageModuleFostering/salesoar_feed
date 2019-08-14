@@ -277,7 +277,7 @@ class Salesoar_Feed_Model_Xml
             ->addAttributeToFilter('is_active', 1)
             ->setPageSize(false);
 
-        $googleProductCategory= '';
+        $googleProductCategory= ''; $product_type = '';
         foreach ($cats as $_c) {
             $product_type = ($_c->getId());
             $_cat = $this->all_categories[$_c->getId()];
@@ -340,15 +340,20 @@ class Salesoar_Feed_Model_Xml
             }
         }
 
-        $rty = $this->all_categories[$product_type];
-        $product_type = '';
-        $path = explode('/', $rty->getPath());
-        for ($i = 2; $i < count($path); $i++) {
-            $cat = $this->all_categories[$path[$i]];
-            if ($i != count($path) - 1)
-                $product_type .= ($label = $cat->getName()) . ' &amp; ';
-            else
-                $product_type .= ($label = $cat->getName()) ;
+        if ($product_type != '' && array_key_exists($product_type, $this->all_categories)) {
+            $rty = $this->all_categories[$product_type];
+            $product_type_print = '';
+            $path = explode('/', $rty->getPath());
+            for ($i = 2; $i < count($path); $i++) {
+                $cat = $this->all_categories[$path[$i]];
+                if ($i != count($path) - 1)
+                    $product_type_print .= ($label = $cat->getName()) . ' &amp; ';
+                else
+                    $product_type_print .= ($label = $cat->getName());
+            }
+        }
+        else {
+            $product_type_print = '';
         }
 
         $data = array(
@@ -362,7 +367,7 @@ class Salesoar_Feed_Model_Xml
             Salesoar_Feed_Model_Atom::NAMESPACE_TAG_GMERCHANT_FEED . ':product_category'
             => $googleProductCategory,
             Salesoar_Feed_Model_Atom::NAMESPACE_TAG_GMERCHANT_FEED . ':product_type'
-            => $product_type,
+            => $product_type_print,
             Salesoar_Feed_Model_Atom::NAMESPACE_TAG_GMERCHANT_FEED . ':price'
             => Mage::helper('core')
                     ->currency($_priceInclTax + $_weeeTaxAmount, false, false)
