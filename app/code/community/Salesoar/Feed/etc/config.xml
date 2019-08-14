@@ -12,7 +12,7 @@
 <config>
     <modules>
         <Salesoar_Feed>
-            <version>1.2.4</version>
+            <version>1.2.5</version>
         </Salesoar_Feed>
     </modules>
     <default>

@@ -21,5 +21,11 @@ class Salesoar_Feed_Block_Xml extends Salesoar_Feed_Block_Abstract
     {
         $xml = Mage::getModel('Salesoar_Feed/Atom');
         $file = $xml->openFileToRead($this->getRequest()->getParam('store'));
+	if ($file) {
+            while (!feof($file)) {
+                echo fread($file, 4096);
+            }
+            fclose($file);
+        }
     }
 }

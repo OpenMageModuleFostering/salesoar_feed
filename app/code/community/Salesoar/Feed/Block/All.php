@@ -26,6 +26,6 @@ class Salesoar_Feed_Block_All extends Salesoar_Feed_Block_Abstract
         foreach ($stores as $store) {
             $resultArr[$store->getName()] = sprintf($feedUrl, $store->getId());
         }
-        return Mage::helper('core')->jsonEncode($resultArr);
+        return json_encode($resultArr, JSON_UNESCAPED_SLASHES);
     }
 }

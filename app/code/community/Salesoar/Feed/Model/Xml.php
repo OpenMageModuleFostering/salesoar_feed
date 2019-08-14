@@ -85,54 +85,19 @@ class Salesoar_Feed_Model_Xml
                 $category_max_depth = count($path);
             }
         }
-        array_push($landings, $this->_createLanding(
-            "Category page",
-            array("category"),
-            $domain . "{category}" . "?___store=" . $store));
 
-        $products = $this->getQueryProducts($store);
-        $tot_cats = 0;
-
-        if (Mage::getStoreConfig('salesoar_feed/config/salesoar_feed_all_categories')) {
-            foreach ($products->getData() as $productData) {
-                $product = Mage::getModel('catalog/Product')->fromArray($productData);
-
-                if ($product->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE &&
-                    $product->getTypeID() == Mage_Catalog_Model_Product_Type::TYPE_SIMPLE
-                ) {
-
-                    // Skip simple products that are children of configurable product
-                    continue;
-                }
-
-                $cats = $product->getCategoryCollection()
-                    ->addAttributeToSelect('entity_id')
-                    ->addAttributeToFilter('is_active', 1)
-                    ->setPageSize(false);
-                $n_cats = count($cats);
-                if ($n_cats > $tot_cats) {
-                    $tot_cats = $n_cats;
-                }
+        for ($i = 0; $i < $category_max_depth - 2; $i++) {
+            $categories = array();
+            for ($j = 0; $j <= $i; $j++) {
+                array_push($categories, "category_L" . $j);
             }
-        } else {
-            $tot_cats = 1;
+            array_push($landings, $this->_createLanding(
+                "Category Level " . (count($categories) - 1) . " page",
+                $categories,
+                $domain . "{" . end($categories) . "}" . "?___store=" . $store));
         }
 
-        for ($k = 0; $k < $tot_cats; $k++) {
-            $prefix = $tot_cats > 1 ? $k : "";
-            for ($i = 0; $i < $category_max_depth - 2; $i++) {
-                $categories = array();
-                for ($j = 0; $j <= $i; $j++) {
-                    array_push($categories, "category" . $prefix . "_L" . $j);
-                }
-                array_push($landings, $this->_createLanding(
-                    "Category" . $prefix . " L" . (count($categories) - 1) . " page",
-                    $categories,
-                    $domain . "{" . end($categories) . "}" . "?___store=" . $store));
-            }
-        }
-
-        return array($landings, $tot_cats);
+        return array($landings);
     }
 
     protected function getAttributeLandings($store, $domain) {
@@ -228,14 +193,19 @@ class Salesoar_Feed_Model_Xml
 
         $landings = array();
 
-        $categoris_totcats = $this->getCategoryLandings($store, $domain);
-        $landings = array_merge($landings, $categoris_totcats[0]);
+        array_push($landings, $this->_createLanding(
+            "Category page",
+            array("category"),
+            $domain . "{category}" . "?___store=" . $store));
+
+        $landings_group = $this->getCategoryLandings($store, $domain);
+
         //ATTRIBUTES FOR LANDING
-        if (Mage::getStoreConfig('salesoar_feed/config/salesoar_feed_add_attributes')) {
+        if (Mage::getStoreConfig('salesoar_feed/attribute_category_settings/salesoar_feed_add_attributes')) {
             $landings = array_merge($landings, $this->getAttributeLandings($store, $domain));
         }
 
-        $atomObj->addLandings($landings);
+        $atomObj->addLandings($landings_group, $landings);
 
         foreach (Mage::getModel('catalog/category')->getCollection()->addAttributeToSelect('name') as $_cat) {
             $this->all_categories[$_cat->getId()] = $_cat;
@@ -247,8 +217,7 @@ class Salesoar_Feed_Model_Xml
             $this->addNewItemXmlCallback(array(
                 'atomObj' => $atomObj,
                 'productData' => $productData,
-                'store' => $store,
-                'tot_cats' => $categoris_totcats[1]));
+                'store' => $store));
         }
 
         $atomObj->addXMLEnd();
@@ -279,7 +248,6 @@ class Salesoar_Feed_Model_Xml
         $productData = $args['productData'];
         $store = $args['store'];
         $atomObj = $args['atomObj'];
-        $tot_cats = $args['tot_cats'];
         $product = Mage::getModel('catalog/Product')->fromArray($productData);
 
         if ($product->getVisibility() == Mage_Catalog_Model_Product_Visibility::VISIBILITY_NOT_VISIBLE &&
@@ -309,13 +277,9 @@ class Salesoar_Feed_Model_Xml
             ->addAttributeToFilter('is_active', 1)
             ->setPageSize(false);
 
-        $prefix = 0;
         $googleProductCategory= '';
         foreach ($cats as $_c) {
             $product_type = ($_c->getId());
-            if ($tot_cats == 1) {
-                $prefix = "";
-            }
             $_cat = $this->all_categories[$_c->getId()];
             $path = explode('/', $_cat->getPath());
             for ($i = 2; $i <count($path); $i++) {
@@ -326,19 +290,13 @@ class Salesoar_Feed_Model_Xml
                 array_push($concepts, $this->_createConcept(
                     "category", $value, $label));
                 array_push($concepts, $this->_createConcept(
-                    "category" . $prefix . "_L" . ($i - 2), $value, $label));
+                    "category_L" . ($i - 2), $value, $label));
 
                 ////GOOGLE_CATEGORY////
                 if ($i == count($path) - 1 && $this->arraySalesoar != null) {
                     if (array_key_exists($cat->getId(), $this->arraySalesoar) && $this->arraySalesoar[$cat->getId()] != 0 && $this->arraySalesoar[$cat->getId()] != NULL)
                         $googleProductCategory = $this->arraySalesoar[$cat->getId()];
                 }
-            }
-            if ($tot_cats == 1) {
-                break;
-            }
-            else {
-                $prefix++;
             }
         }
 
@@ -424,3 +382,4 @@ class Salesoar_Feed_Model_Xml
         $atomObj->addEntry($data);
     }
 }
+

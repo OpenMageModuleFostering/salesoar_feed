@@ -16,7 +16,6 @@ class Salesoar_Feed_Model_Observer
 
     public function handle_adminSystemConfigChangedSection()
     {
-	$prefix = Mage::getConfig()->getTablePrefix(); 
         $googleSalesoar = $_POST['googleSalesoar'];
         $sql = '';
         foreach($googleSalesoar as $idCat => $string ){

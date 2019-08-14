@@ -54,12 +54,48 @@ EOT;
             $data['language']))));
     }
 
-    public function addLandings($landings) {
+    public function addLandings($landings_group, $landings) {
         fwrite($this->output, "  <sr:landings>\n");
+        foreach ($landings_group[0] as $landing) {
+            if(count($landing['sr:landing']['sr:concepts'])<=1){
+                $this->_addLanding($landing);
+            }
+            else {
+                $this->_addLanding_group($landing);
+            }
+        }
         foreach ($landings as $landing) {
             $this->_addLanding($landing);
         }
         fwrite($this->output, "  </sr:landings>\n");
+    }
+
+    public function _addLandingConcept($concept) {
+        fwrite($this->output, utf8_encode("        <sr:concept>"));
+        fwrite($this->output, utf8_encode(preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', $concept['sr:concept'])));
+        fwrite($this->output, utf8_encode("</sr:concept>\n"));
+    }
+
+
+    public function _addLanding_group($landing) {
+        $formatBegin = <<<EOT
+    <sr:landing>
+      <sr:name><![CDATA[%s]]></sr:name>
+      <sr:concepts>
+        <group>\n
+EOT;
+        $formatEnd = <<<EOT
+        </group>
+      </sr:concepts>
+      <sr:url><![CDATA[%s]]></sr:url>
+    </sr:landing>\n
+EOT;
+        $landing = $landing['sr:landing'];
+        fwrite($this->output, utf8_encode(preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', sprintf($formatBegin, $landing['sr:name']))));
+        foreach ($landing['sr:concepts'] as $concept) {
+            $this->_addLandingConcept($concept);
+        }
+        fwrite($this->output, utf8_encode(sprintf($formatEnd, $landing['sr:url'])));
     }
 
     public function _addLanding($landing) {
@@ -79,12 +115,6 @@ EOT;
             $this->_addLandingConcept($concept);
         }
         fwrite($this->output, utf8_encode(sprintf($formatEnd, $landing['sr:url'])));
-    }
-
-    public function _addLandingConcept($concept) {
-        fwrite($this->output, utf8_encode("        <sr:concept>"));
-        fwrite($this->output, utf8_encode(preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', $concept['sr:concept'])));
-        fwrite($this->output, utf8_encode("</sr:concept>\n"));
     }
 
     public function addEntry($entry) {
@@ -191,3 +221,4 @@ EOT;
         return $this->output;
     }
 }
+

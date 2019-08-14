@@ -22,5 +22,6 @@ class Salesoar_Feed_Block_Create extends Salesoar_Feed_Block_Abstract
     {
         $xml = Mage::getModel('Salesoar_Feed/All');
         $xml->createAllXml();
+	print 'Finish';
     }
 }
