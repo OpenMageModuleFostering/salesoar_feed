@@ -1,7 +1,7 @@
 {
     "name": "OpenMageModuleFostering/Salesoar_Feed",
     "type": "magento-module",
-    "license": "OSL-v3.0",
+    "license": "Open-Software-License-(OSL)",
     "homepage": "",
     "description": "Salesoar Plugin",
     "authors": [

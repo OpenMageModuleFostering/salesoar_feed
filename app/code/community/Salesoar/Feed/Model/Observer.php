@@ -18,6 +18,7 @@ class Salesoar_Feed_Model_Observer
     {
         $googleSalesoar = $_POST['googleSalesoar'];
         $sql = '';
+        $prefix = Mage::getConfig()->getTablePrefix();
         foreach($googleSalesoar as $idCat => $string ){
             if($string == '') {
                 $idGoogle = 0;
