@@ -1,0 +1,155 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Salesoar
+ *
+ * @category    Salesoar
+ * @package     Salesoar_Feed
+ * @copyright   Copyright (c) 2015 Salesoar S.r.l. (http://salesoar.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+-->
+<config>
+    <modules>
+        <Salesoar_Feed>
+            <version>1.2.0</version>
+        </Salesoar_Feed>
+    </modules>
+    <default>
+        <salesoar_feed>
+            <config>
+                <salesoar_feed_enable>1</salesoar_feed_enable>
+                <salesoar_feed_create_enable>1</salesoar_feed_create_enable>
+                <salesoar_feed_all_categories>1</salesoar_feed_all_categories>
+                <salesoar_feed_add_attributes>1</salesoar_feed_add_attributes>
+                <cron_settings>0 1 * * *</cron_settings>
+            </config>
+        </salesoar_feed>
+    </default>
+    <global>
+        <models>
+            <Salesoar_Feed>
+                <class>Salesoar_Feed_Model</class>
+                <resourceModel>Salesoar_Feed_mysql4</resourceModel>
+            </Salesoar_Feed>
+            <Salesoar_Feed__mysql4>
+                <class>Salesoar_Feed_Model_Mysql4</class>
+                <entities>
+                    <Salesoar_Feed>
+                        <table>Salesoar_Feed</table>  <!-- Db table name  -->
+                    </Salesoar_Feed>
+                </entities>
+            </Salesoar_Feed__mysql4>
+        </models>
+        <events>
+            <admin_system_config_changed_section_salesoar_feed>
+                <observers>
+                    <mymodule>
+                        <type>singleton</type>
+                        <class>Salesoar_Feed_Model_Observer</class>
+                        <method>handle_adminSystemConfigChangedSection</method>
+                    </mymodule>
+                </observers>
+            </admin_system_config_changed_section_salesoar_feed>
+        </events>
+        <resources>
+            <Salesoar_Feed_setup>
+                <setup>
+                    <module>Salesoar_Feed</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </Salesoar_Feed_setup>
+            <Salesoar_Feed_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </Salesoar_Feed_write>
+            <Salesoar_Feed_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </Salesoar_Feed_read>
+        </resources>
+        <helpers>
+            <Salesoar_Feed>
+                <class>Salesoar_Feed_Helper</class>
+            </Salesoar_Feed>
+        </helpers>
+        <blocks>
+            <Salesoar_Feed>
+                <class>Salesoar_Feed_Block</class>
+            </Salesoar_Feed>
+        </blocks>
+    </global>
+
+    <admin>
+    </admin>
+
+    <adminhtml>
+        <translate>
+            <modules>
+                <Salesoar_Feed>
+                    <files>
+                        <default>Salesoar_Feed.csv</default>
+                    </files>
+                </Salesoar_Feed>
+            </modules>
+        </translate>
+        <layout>
+            <updates>
+                <Salesoar_Feed>
+                    <file>salesoar_feed.xml</file>
+                </Salesoar_Feed>
+            </updates>
+        </layout>
+        <layout>
+            <updates>
+                <salesoar_feed>
+                    <file>salesoar_feed.xml</file>
+                </salesoar_feed>
+            </updates>
+        </layout>
+    </adminhtml>
+
+    <frontend>
+        <translate>
+            <modules>
+                <Salesoar_Feed>
+                    <files>
+                        <default>Salesoar_Feed.csv</default>
+                    </files>
+                </Salesoar_Feed>
+            </modules>
+        </translate>
+        <routers>
+            <salesoar_feed>
+                <use>standard</use>
+                <args>
+                    <module>Salesoar_Feed</module>
+                    <frontName>salesoar</frontName>
+                </args>
+            </salesoar_feed>
+        </routers>
+        <layout>
+            <updates>
+                <salesoar_feed>
+                    <file>salesoar_feed.xml</file>
+                </salesoar_feed>
+            </updates>
+        </layout>
+    </frontend>
+    <crontab>
+        <jobs>
+            <Salesoar_Feed_create_feeds>
+                <config>
+                    <config_path>salesoar_feed/schedule/cron_settings</config_path>
+                </config>
+                <run>
+                    <model>Salesoar_Feed/All::createAllXml</model>
+                </run>
+            </Salesoar_Feed_create_feeds>
+        </jobs>
+    </crontab>
+</config>

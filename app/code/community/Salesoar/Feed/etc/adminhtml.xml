@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Salesoar
+ *
+ * @category    Salesoar
+ * @package     Salesoar_Feed
+ * @copyright   Copyright (c) 2015 Salesoar S.r.l. (http://salesoar.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+-->
+<config>
+    <acl>
+        <resources>
+            <admin>
+                <children>
+                    <system>
+                        <children>
+                            <config>
+                                <children>
+                                    <salesoar_feed translate="title">
+                                        <title>Salesoar Feeds Section</title>
+                                        <sort_order>135</sort_order>
+                                    </salesoar_feed>
+                                </children>
+                            </config>
+                        </children>
+                    </system>
+                </children>
+            </admin>
+        </resources>
+    </acl>
+</config>

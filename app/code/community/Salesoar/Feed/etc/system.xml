@@ -1,0 +1,145 @@
+<?xml version="1.0"?>
+
+
+<!--
+/**
+ * Salesoar
+ *
+ * @category    Salesoar
+ * @package     Salesoar_Feed
+ * @copyright   Copyright (c) 2015 Salesoar S.r.l. (http://salesoar.com)
+ * @license     http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
+ */
+-->
+<config>
+
+    <sections>
+        <salesoar_feed translate="label" model="Salesoar_Feed">
+            <label>Salesoar Feed</label>
+            <tab>sales</tab>
+            <frontend_type>text</frontend_type>
+            <sort_order>350</sort_order>
+            <show_in_default>1</show_in_default>
+            <show_in_website>1</show_in_website>
+            <show_in_store>1</show_in_store>
+            <groups>
+                <config translate="label comment" module="Salesoar_Feed">
+                    <label>General Option</label>
+                    <frontend_type>text</frontend_type>
+                    <sort_order>10</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <salesoar_feed_enable translate="label">
+                            <label>Enable Feeds</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <backend_model>Salesoar_Feed/system_config_backend_links</backend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </salesoar_feed_enable>
+                        <salesoar_feed_create_enable translate="label">
+                            <label>Enable the "Create Feed" Link</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_enabledisable</source_model>
+                            <backend_model>Salesoar_Feed/system_config_backend_create</backend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </salesoar_feed_create_enable>
+                        <salesoar_feed_show_feed translate="label">
+                            <label>Feed Links</label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>Salesoar_Feed/adminhtml_frontend_links</frontend_model>
+                            <sort_order>50</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </salesoar_feed_show_feed>
+                        <salesoar_feed_create_feed translate="label">
+                            <label>Create Feeds</label>
+                            <frontend_type>label</frontend_type>
+                            <frontend_model>Salesoar_Feed/adminhtml_frontend_create</frontend_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </salesoar_feed_create_feed>
+                        <cron_settings>
+                            <label>How often do you want the creation feed to run?</label>
+                            <frontend_type>text</frontend_type>
+                            <sort_order>70</sort_order>
+                            <comment>Use Crontab Format (Eg. "*/5 * * * *" for every 5 minutes)</comment>
+                            <show_in_default>1</show_in_default>
+                        </cron_settings>
+                    </fields>
+                </config>
+                <attribute_category_settings translate="label comment" module="Salesoar_Feed">
+                    <label>Attributes and categories export settings</label>
+                    <comment>If you want to use this option you must choose a specific store of yours. (Top left)</comment>
+                    <sort_order>20</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <salesoar_feed_add_attributes translate="label">
+                            <label>Add attributes to the product</label>
+                            <comment>If you choose Yes all attributes will be associated to the product in the XML</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>Salesoar_Feed/system_config_backend_attributes</backend_model>
+                            <sort_order>10</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </salesoar_feed_add_attributes>
+                        <salesoar_feed_all_categories translate="label comment">
+                            <label>Add multiple categories to the product</label>
+                            <comment>If you choose No only the first category will be associated to the product in the XML</comment>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <backend_model>Salesoar_Feed/system_config_backend_categories</backend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </salesoar_feed_all_categories>
+                    </fields>
+                </attribute_category_settings>
+                <map_google_categories translate="label comment" module="Salesoar_Feed">
+                    <label>Map your shop's categories with Google's categories</label>
+                    <sort_order>30</sort_order>
+                    <show_in_default>1</show_in_default>
+                    <show_in_website>1</show_in_website>
+                    <show_in_store>1</show_in_store>
+                    <expanded>1</expanded>
+                    <fields>
+                        <map_google translate="label">
+                            <frontend_model>Salesoar_Feed/config_tableMapping</frontend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized_array</backend_model>
+                            <backend_model>adminhtml/system_config_backend_serialized</backend_model>
+                            <sort_order>20</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </map_google>
+                    </fields>
+                </map_google_categories>
+            </groups>
+        </salesoar_feed>
+    </sections>
+</config>
+
+
+
+
+
+
+
+
