@@ -41,7 +41,7 @@ class Salesoar_Feed_Model_Atom
   <updated>%s</updated>
   <link rel="self" href="%s" hreflang="%s"/>\n
 EOT;
-        fwrite($this->output, utf8_encode(preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', sprintf($format,
+        fwrite($this->output, sprintf($format,
             $data['charset'],
             Salesoar_Feed_Model_Atom::NAMESPACE_TAG_GMERCHANT_FEED,
             Salesoar_Feed_Model_Atom::NAMESPACE_URI_GMERCHANT_FEED,
@@ -51,7 +51,7 @@ EOT;
             $data['title'],
             date("Y-m-d H:i:s"),
             $data['link'],
-            $data['language']))));
+            $data['language']));
     }
 
     public function addLandings($landings_group, $landings) {
@@ -71,9 +71,9 @@ EOT;
     }
 
     public function _addLandingConcept($concept) {
-        fwrite($this->output, utf8_encode("        <sr:concept>"));
-        fwrite($this->output, utf8_encode(preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', $concept['sr:concept'])));
-        fwrite($this->output, utf8_encode("</sr:concept>\n"));
+        fwrite($this->output, "        <sr:concept>");
+        fwrite($this->output, $concept['sr:concept']);
+        fwrite($this->output, "</sr:concept>\n");
     }
 
 
@@ -91,11 +91,11 @@ EOT;
     </sr:landing>\n
 EOT;
         $landing = $landing['sr:landing'];
-        fwrite($this->output, utf8_encode(preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', sprintf($formatBegin, $landing['sr:name']))));
+        fwrite($this->output, sprintf($formatBegin, $landing['sr:name']));
         foreach ($landing['sr:concepts'] as $concept) {
             $this->_addLandingConcept($concept);
         }
-        fwrite($this->output, utf8_encode(sprintf($formatEnd, $landing['sr:url'])));
+        fwrite($this->output, sprintf($formatEnd, $landing['sr:url']));
     }
 
     public function _addLanding($landing) {
@@ -110,11 +110,11 @@ EOT;
     </sr:landing>\n
 EOT;
         $landing = $landing['sr:landing'];
-        fwrite($this->output, utf8_encode(preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', sprintf($formatBegin, $landing['sr:name']))));
+        fwrite($this->output, sprintf($formatBegin, $landing['sr:name']));
         foreach ($landing['sr:concepts'] as $concept) {
             $this->_addLandingConcept($concept);
         }
-        fwrite($this->output, utf8_encode(sprintf($formatEnd, $landing['sr:url'])));
+        fwrite($this->output, sprintf($formatEnd, $landing['sr:url']));
     }
 
     public function addEntry($entry) {
@@ -138,7 +138,7 @@ EOT;
     </sr:concepts>
   </entry>\n
 EOT;
-            fwrite($this->output, utf8_encode(preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '',sprintf($formatBegin,
+            fwrite($this->output, sprintf($formatBegin,
                 $entry['guid'],
                 $entry['title'],
                 date("Y-m-d H:i:s"),
@@ -148,11 +148,11 @@ EOT;
                 $entry['g:product_type'],
                 $entry['g:price'],
                 $entry['g:sale_price'],
-                $entry['g:brand']))));
+                $entry['g:brand']));
             foreach ($entry['sr:concepts'] as $concept) {
                 $this->_addConcept($concept);
             }
-            fwrite($this->output, utf8_encode(preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', sprintf($formatEnd))));
+            fwrite($this->output, sprintf($formatEnd));
         }
         else{
             $formatBegin = <<<EOT
@@ -175,7 +175,7 @@ EOT;
     </sr:concepts>
   </entry>\n
 EOT;
-            fwrite($this->output, utf8_encode(preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', sprintf($formatBegin,
+            fwrite($this->output, sprintf($formatBegin,
                 $entry['guid'],
                 $entry['title'],
                 date("Y-m-d H:i:s"),
@@ -186,27 +186,42 @@ EOT;
                 $entry['g:product_type'],
                 $entry['g:price'],
                 $entry['g:sale_price'],
-                $entry['g:brand']))));
+                $entry['g:brand']));
             foreach ($entry['sr:concepts'] as $concept) {
                 $this->_addConcept($concept);
             }
-            fwrite($this->output, utf8_encode(sprintf($formatEnd)));
+            fwrite($this->output, $formatEnd);
         }
     }
 
     public function _addConcept($concept) {
-        $format = <<<EOT
+        $concept = $concept['sr:concept'];
+        if (array_key_exists('sr:parent', $concept)){
+            $format = <<<EOT
+        <sr:concept>
+          <sr:name>%s</sr:name>
+          <sr:value>%s</sr:value>
+          <sr:label><![CDATA[%s]]></sr:label>
+          <sr:parent>
+            <sr:name><![CDATA[%s]]></sr:name>
+            <sr:value><![CDATA[%s]]></sr:value>
+            <sr:label><![CDATA[%s]]></sr:label>
+          </sr:parent>
+        </sr:concept>\n
+EOT;
+            $format = sprintf($format, $concept['sr:name'], $concept['sr:value'], $concept['sr:label'],
+                $concept['sr:parent']['sr:name'], $concept['sr:parent']['sr:value'], $concept['sr:parent']['sr:label']);
+       } else {
+            $format = <<<EOT
       <sr:concept>
         <sr:name>%s</sr:name>
         <sr:value>%s</sr:value>
         <sr:label><![CDATA[%s]]></sr:label>
       </sr:concept>\n
 EOT;
-        $concept = $concept['sr:concept'];
-        fwrite($this->output, utf8_encode(preg_replace('/[\x00-\x09\x0B\x0C\x0E-\x1F\x7F]/', '', sprintf($format,
-            $concept['sr:name'],
-            $concept['sr:value'],
-            $concept['sr:label']))));
+            $format = sprintf($format, $concept['sr:name'], $concept['sr:value'], $concept['sr:label']);
+      }
+      fwrite($this->output, $format);
     }
 
     public function addXMLEnd() {

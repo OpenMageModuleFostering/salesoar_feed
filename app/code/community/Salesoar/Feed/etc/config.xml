@@ -12,34 +12,25 @@
 <config>
     <modules>
         <Salesoar_Feed>
-            <version>1.2.7</version>
+            <version>1.2.8</version>
         </Salesoar_Feed>
     </modules>
     <default>
-        <salesoar_feed>
+        <Salesoar_Feed>
             <config>
-                <salesoar_feed_enable>1</salesoar_feed_enable>
-                <salesoar_feed_create_enable>1</salesoar_feed_create_enable>
-                <salesoar_feed_all_categories>1</salesoar_feed_all_categories>
-                <salesoar_feed_add_attributes>1</salesoar_feed_add_attributes>
+                <Salesoar_Feed_enable>1</Salesoar_Feed_enable>
+                <Salesoar_Feed_create_enable>1</Salesoar_Feed_create_enable>
+                <Salesoar_Feed_all_categories>1</Salesoar_Feed_all_categories>
+                <Salesoar_Feed_add_attributes>1</Salesoar_Feed_add_attributes>
                 <cron_settings>0 1 * * *</cron_settings>
             </config>
-        </salesoar_feed>
+        </Salesoar_Feed>
     </default>
     <global>
         <models>
             <Salesoar_Feed>
                 <class>Salesoar_Feed_Model</class>
-                <resourceModel>Salesoar_Feed_mysql4</resourceModel>
             </Salesoar_Feed>
-            <Salesoar_Feed__mysql4>
-                <class>Salesoar_Feed_Model_Mysql4</class>
-                <entities>
-                    <Salesoar_Feed>
-                        <table>Salesoar_Feed</table>  <!-- Db table name  -->
-                    </Salesoar_Feed>
-                </entities>
-            </Salesoar_Feed__mysql4>
         </models>
         <events>
             <admin_system_config_changed_section_salesoar_feed>
@@ -100,15 +91,15 @@
         <layout>
             <updates>
                 <Salesoar_Feed>
-                    <file>salesoar_feed.xml</file>
+                    <file>Salesoar_Feed.xml</file>
                 </Salesoar_Feed>
             </updates>
         </layout>
         <layout>
             <updates>
-                <salesoar_feed>
-                    <file>salesoar_feed.xml</file>
-                </salesoar_feed>
+                <Salesoar_Feed>
+                    <file>Salesoar_Feed.xml</file>
+                </Salesoar_Feed>
             </updates>
         </layout>
     </adminhtml>
@@ -124,19 +115,19 @@
             </modules>
         </translate>
         <routers>
-            <salesoar_feed>
+            <Salesoar_Feed>
                 <use>standard</use>
                 <args>
                     <module>Salesoar_Feed</module>
                     <frontName>salesoar</frontName>
                 </args>
-            </salesoar_feed>
+            </Salesoar_Feed>
         </routers>
         <layout>
             <updates>
-                <salesoar_feed>
-                    <file>salesoar_feed.xml</file>
-                </salesoar_feed>
+                <Salesoar_Feed>
+                    <file>Salesoar_Feed.xml</file>
+                </Salesoar_Feed>
             </updates>
         </layout>
     </frontend>
@@ -144,12 +135,11 @@
         <jobs>
             <Salesoar_Feed_create_feeds>
                 <config>
-                    <config_path>salesoar_feed/schedule/cron_settings</config_path>
+                    <config_path>Salesoar_Feed/schedule/cron_settings</config_path>
                 </config>
                 <run>
                     <model>Salesoar_Feed/All::createAllXml</model>
                 </run>
-            </Salesoar_Feed_create_feeds>
-        </jobs>
+            </Salesoar_Feed_create_feeds></jobs>
     </crontab>
 </config>

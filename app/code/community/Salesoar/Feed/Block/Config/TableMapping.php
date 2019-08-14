@@ -8,9 +8,7 @@
 
 class Salesoar_Feed_Block_Config_TableMapping
     extends Mage_Adminhtml_Block_System_Config_Form_Field
-
 {
-
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
         $html ='';
@@ -80,7 +78,7 @@ class Salesoar_Feed_Block_Config_TableMapping
         $resource = Mage::getSingleton('core/resource');
         $readConnection = $resource->getConnection('core_read');
         $prefix = Mage::getConfig()->getTablePrefix();
-        $query = 'SELECT * FROM  `'.$prefix.'Salesoar_Feed` ';
+        $query = 'SELECT * FROM  `'.$prefix.'salesoar_feed` ';
         $results = $readConnection->fetchAll($query);
         foreach($results as $item => $value){                           //Format array [id_category] => (0 => [google_name], [1] => [google_id])
             $arraySalesoar[$value['id_category']][0] = $value['google_name'];
@@ -119,7 +117,7 @@ class Salesoar_Feed_Block_Config_TableMapping
                     var arraySalesoar =   <?php echo  $arraySalesoar ?>;
                     $j("#storeSelect").on("change", function() {
                         var $array = <?php echo  $array ?>;
-                        $j("#salesoar_feed_map_google_categories").append('<table id="addElement" style="width:100%"></table>');
+                        $j("#Salesoar_Feed_map_google_categories").append('<table id="addElement" style="width:100%"></table>');
                         $j("#addElement").html("");
                         for (i = 0; i < $array[$j(this).val()].length; i++) {
                             var id = $array[$j(this).val()][i]["value"];

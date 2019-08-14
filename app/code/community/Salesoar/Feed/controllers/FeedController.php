@@ -17,13 +17,12 @@
 
 class Salesoar_Feed_FeedController extends Mage_Core_Controller_Front_Action
 {
-
     /**
      * Index action--- 	action : Click to open Feeds
      */
     public function indexAction()
     {
-        if (Mage::getStoreConfig('salesoar_feed/config/salesoar_feed_create_enable')) {
+        if (Mage::getStoreConfig('Salesoar_Feed/config/Salesoar_Feed_create_enable')) {
             $this->getResponse()->setHeader('Content-type', 'application/json; charset=UTF-8', true);
             $this->loadLayout(false);
             $this->renderLayout();
@@ -39,7 +38,7 @@ class Salesoar_Feed_FeedController extends Mage_Core_Controller_Front_Action
      */
     public function xmlAction()
     {
-        if (Mage::getStoreConfig('salesoar_feed/config/salesoar_feed_create_enable')) {
+        if (Mage::getStoreConfig('Salesoar_Feed/config/Salesoar_Feed_create_enable')) {
             $jsonResp = true;
             if ($this->getRequest()->getParam('store')) {
                 if (is_numeric($this->getRequest()->getParam('store'))) {
@@ -50,7 +49,7 @@ class Salesoar_Feed_FeedController extends Mage_Core_Controller_Front_Action
                 }
             }
             if ($jsonResp) {
-                $this->_redirect("salesoar_feed/feed");
+                $this->_redirect("Salesoar_Feed/feed");
             }
             else {
                 header('Content-Type: text/xml; charset=UTF-8');
@@ -70,7 +69,7 @@ class Salesoar_Feed_FeedController extends Mage_Core_Controller_Front_Action
      */
     public function createAction()
     {
-        if (Mage::getStoreConfig('salesoar_feed/config/salesoar_feed_create_enable')) {
+        if (Mage::getStoreConfig('Salesoar_Feed/config/Salesoar_Feed_create_enable')) {
             $this->loadLayout(false);
             $this->renderLayout();
         } else {

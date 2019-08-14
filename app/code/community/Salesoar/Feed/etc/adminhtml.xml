@@ -18,10 +18,10 @@
                         <children>
                             <config>
                                 <children>
-                                    <salesoar_feed translate="title">
+                                    <Salesoar_Feed translate="title" module="Salesoar_Feed">
                                         <title>Salesoar Feeds Section</title>
                                         <sort_order>135</sort_order>
-                                    </salesoar_feed>
+                                    </Salesoar_Feed>
                                 </children>
                             </config>
                         </children>

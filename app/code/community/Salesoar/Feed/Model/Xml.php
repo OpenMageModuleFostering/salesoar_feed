@@ -163,7 +163,7 @@ class Salesoar_Feed_Model_Xml
         $resource = Mage::getSingleton('core/resource');
         $readConnection = $resource->getConnection('core_read');
         $prefix = Mage::getConfig()->getTablePrefix();
-        $query = 'SELECT * FROM  `'.$prefix.'Salesoar_Feed` ';
+        $query = 'SELECT * FROM  `'.$prefix.'salesoar_feed` ';
         $readConnection->fetchAll($query);
         $array = $readConnection->fetchAll($query);
         $this->arraySalesoar = array();
@@ -237,6 +237,23 @@ class Salesoar_Feed_Model_Xml
         );
     }
 
+    protected function _createConceptWithParent($name, $value, $label, $parent)
+    {
+        $concept = array(
+            Salesoar_Feed_Model_Atom::NAMESPACE_TAG_SALESOAR_FEED . ':name' => $name,
+            Salesoar_Feed_Model_Atom::NAMESPACE_TAG_SALESOAR_FEED . ':value' => $value,
+            Salesoar_Feed_Model_Atom::NAMESPACE_TAG_SALESOAR_FEED . ':label' => $label,
+            Salesoar_Feed_Model_Atom::NAMESPACE_TAG_SALESOAR_FEED . ':parent' =>
+                array(
+                    Salesoar_Feed_Model_Atom::NAMESPACE_TAG_SALESOAR_FEED . ':name' => $parent['name'],
+                    Salesoar_Feed_Model_Atom::NAMESPACE_TAG_SALESOAR_FEED . ':value' => $parent['value'],
+                    Salesoar_Feed_Model_Atom::NAMESPACE_TAG_SALESOAR_FEED . ':label' => $parent['label'])
+        );
+        return array(
+            Salesoar_Feed_Model_Atom::NAMESPACE_TAG_SALESOAR_FEED . ':concept' => $concept
+        );
+    }
+
     /**
      * Preparing data and adding to rss object
      *
@@ -286,11 +303,19 @@ class Salesoar_Feed_Model_Xml
                 $cat = $this->all_categories[$path[$i]];
                 $label = $cat->getName();
                 $value = substr($cat->getUrl(), $this->domainLength);
-
                 array_push($concepts, $this->_createConcept(
                     "category", $value, $label));
-                array_push($concepts, $this->_createConcept(
-                    "category_L" . ($i - 2), $value, $label));
+                if ($i -2 > 0){
+                    $parent = $this->all_categories[$path[$i-1]];
+                    $parent_label = $parent->getName();
+                    $parent_value = substr($parent->getUrl(), $this->domainLength);
+                    $parent_to_print = array('name' => "category_L". ($i-3) , 'value' => $parent_value, 'label' => $parent_label);
+                    array_push($concepts, $this->_createConceptWithParent(
+                        "category_L" . ($i - 2), $value, $label, $parent_to_print));
+                } else {
+                    array_push($concepts, $this->_createConcept(
+                        "category_L" . ($i - 2), $value, $label));
+                }
 
                 ////GOOGLE_CATEGORY////
                 if ($i == count($path) - 1 && $this->arraySalesoar != null) {

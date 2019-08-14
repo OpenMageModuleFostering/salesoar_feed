@@ -28,7 +28,7 @@ class Salesoar_Feed_Model_Observer
                 $idGoogle = (int)substr($string,0,strpos($string, '£$%&'));
                 $nameGoogle = (string)trim(substr($string, strpos($string, '£$%&')+5));
             }
-            $sql .= 'INSERT INTO `'.$prefix.'Salesoar_Feed` (`id_category`, `google_id`, `google_name`) VALUES ('.$idCat.', '. $idGoogle.', \''.$nameGoogle.'\' )
+            $sql .= 'INSERT INTO `'.$prefix.'salesoar_feed` (`id_category`, `google_id`, `google_name`) VALUES ('.$idCat.', '. $idGoogle.', \''.$nameGoogle.'\' )
                       ON DUPLICATE KEY UPDATE  `google_id` = '.$idGoogle.', `google_name` = \''.$nameGoogle.'\' ; ';
         }
         if ($sql != '') {
