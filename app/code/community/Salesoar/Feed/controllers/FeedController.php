@@ -22,7 +22,7 @@ class Salesoar_Feed_FeedController extends Mage_Core_Controller_Front_Action
      */
     public function indexAction()
     {
-        if (Mage::getStoreConfig('Salesoar_Feed/config/Salesoar_Feed_create_enable')) {
+        if (Mage::getStoreConfig('Salesoar_Feed/config/Salesoar_Feed_enable')) {
             $this->getResponse()->setHeader('Content-type', 'application/json; charset=UTF-8', true);
             $this->loadLayout(false);
             $this->renderLayout();
@@ -38,7 +38,7 @@ class Salesoar_Feed_FeedController extends Mage_Core_Controller_Front_Action
      */
     public function xmlAction()
     {
-        if (Mage::getStoreConfig('Salesoar_Feed/config/Salesoar_Feed_create_enable')) {
+        if (Mage::getStoreConfig('Salesoar_Feed/config/Salesoar_Feed_enable')) {
             $jsonResp = true;
             if ($this->getRequest()->getParam('store')) {
                 if (is_numeric($this->getRequest()->getParam('store'))) {

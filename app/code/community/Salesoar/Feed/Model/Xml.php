@@ -201,7 +201,7 @@ class Salesoar_Feed_Model_Xml
         $landings_group = $this->getCategoryLandings($store, $domain);
 
         //ATTRIBUTES FOR LANDING
-        if (Mage::getStoreConfig('salesoar_feed/attribute_category_settings/salesoar_feed_add_attributes')) {
+        if (Mage::getStoreConfig('Salesoar_Feed/config/Salesoar_Feed_add_attributes')) {
             $landings = array_merge($landings, $this->getAttributeLandings($store, $domain));
         }
 
@@ -325,7 +325,7 @@ class Salesoar_Feed_Model_Xml
             }
         }
 
-        if (Mage::getStoreConfig('salesoar_feed/config/salesoar_feed_add_attributes')) {
+        if (Mage::getStoreConfig('Salesoar_Feed/config/Salesoar_Feed_add_attributes')) {
             foreach (Mage::getResourceModel('catalog/product')
                          ->getAttributeRawValue($product->getId(),
                              $this->all_attribute_codes, Mage::app()->getStore()) as $attrCode => $value) {
